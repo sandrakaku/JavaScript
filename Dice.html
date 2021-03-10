@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>P601</title>
+        <script>
+            function go(dicelist, dicNumber, dicCount) {
+                document.querySelector("#ans").innerHTML = "";
+                var myMap = {};
+                for (var i = 0; i < dicCount; i++) {
+                    let sum = 0;
+                    for (var j = 0; j < dicNumber; j++) {
+                        sum += Math.floor(Math.random() * Math.floor(dicelist)) + 1;
+                    }
+                    if (myMap[sum] == null) {
+                        myMap[sum] = 1;
+                    } else {
+                        myMap[sum] = myMap[sum] + 1;
+                    }
+                }
+                function stars(n) {
+                    var result = "";
+                    for (var i = 0; i < n; i++) {
+                        result += "*";
+                    }
+                    return result;
+                }
+                
+                var tbody = document.createElement("tbody");
+                var headerTr = document.createElement("tr");
+                var totalTd = document.createElement("td");
+                totalTd.innerHTML = "Total";
+                var timesTd = document.createElement("td");
+                timesTd.innerHTML = "Times";                          
+                headerTr.appendChild(totalTd);
+                headerTr.appendChild(timesTd);
+                tbody.appendChild(headerTr);
+                for (var key in myMap) {
+                    var newRecord = document.createElement("tr");
+                    var value = myMap[key];
+                    var newTotalTd = document.createElement("td");
+                    newTotalTd.innerHTML = key;
+                    var newTimesTd = document.createElement("td");
+                    newTimesTd.innerHTML = value;
+                    var newStarsTd = document.createElement("td");
+                    newStarsTd.innerHTML = stars(value);
+                    newRecord.appendChild(newTotalTd);
+                    newRecord.appendChild(newTimesTd);
+                    newRecord.appendChild(newStarsTd);
+                    tbody.appendChild(newRecord);
+                }
+                document.querySelector("#ans").appendChild(tbody);
+            }
+        </script>
+    </head>
+    <body>
+        請選擇骰子面數:
+        <select name="dice" id="dice">
+            <option value="1">1面</option>
+            <option value="2">2面</option>
+            <option value="3">3面</option>
+            <option value="4">4面</option>
+            <option value="5">5面</option>
+            <option value="6" selected>6面</option>
+        </select>
+        請輸入骰子數量:<input type="dicNumber" id="dicNumber" /> 請輸入要丟擲幾次:<input type="count" id="count" />
+        <br />
+        <button onclick="go(dice.value, dicNumber.value, count.value)">擲出</button>
+        <table id="ans"></table>
+    </body>
+</html>
