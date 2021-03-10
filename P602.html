@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>P602</title>
+        <style type="text/css">
+            /*設一個框*/
+            #container {
+                width: 300px;
+                height: 150px;
+                border: 1px solid #ccc;
+            }
+            /*圓角*/
+            #calendartable {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            /*設日~一的框和置中*/
+            #calendartable tr th {
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+            #calendarTbody tr td {
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+        </style>
+        <script type="text/javascript">
+            <!--按下確定鍵印出月曆-->
+                function printDate(){
+                    var calendarTbody=document.getElementById("calendarTbody");
+                    var year=document.getElementById("year").value;
+                    var month=document.getElementById("month").value;
+                    var dt=new Date();
+                    dt.setFullYear(year,month-1,1);//電腦的month0=1 :0--11
+                    var week=dt.getDay();//求得該月1號為週幾
+                //Tbody.row輸入過有東西的話就delete掉避免日曆保留前一個繼續往下印(getElementsByTagName獲得標籤對象集合)
+                while(calendarTbody.getElementsByTagName("tr").length>1){
+                    calendarTbody.innerHTML="";
+                }
+                //在while迴圈外先做出空格cells，會放進第一個Row裡
+                var tr=calendarTbody.insertRow();
+                    for(var i =0; i<week; i++){
+                        var cell= tr.insertCell(i);
+                        cell.innerHTML="";
+                }
+
+                //如果month沒有變，就繼續印date
+                while(dt.getMonth() == month-1){
+                //換行判斷: 如果我變成星期日就新增一個row,沒有的話繼續印
+                    if(dt.getDay()==0){
+                        tr = calendarTbody.insertRow();
+                    }
+                    cell = tr.insertCell();
+                    cell.innerHTML = dt.getDate();
+                    dt.setDate(dt.getDate()+1);
+                }
+                // 取得input印出年月
+                var printYear = document.getElementById("year").value;
+                var printMonth = document.getElementById("month").value;
+                document.getElementById("printYear").innerHTML = printYear;
+                document.getElementById("printMonth").innerHTML = printMonth;
+                }
+            <!--按下清除鍵清除input-->
+            function deleteDate(){
+                document.getElementById("inputForm").reset();
+                document.getElementById("printYear").innerHTML = "";
+                document.getElementById("printMonth").innerHTML = "";
+                document.getElementById("calendarTbody").innerHTML = "";
+            }
+        </script>
+    </head>
+    <body>
+        <b>年月輸入:</b>
+        <table id="table" width="300" border="1">
+            <tr>
+                <td>年:</td>
+                <form id="inputForm">
+                    <td><input id="year" type="text" name="year" /></td>
+            </tr>
+                    <tr>
+                        <td>月:</td>
+                        <td><input id="month" type="text" name="month" /></td>
+                    </tr>
+                </form>
+            </tr>
+            <tr>
+                <td><button type="button" onclick="printDate()">確定</button></td>
+                <td><button type="button" onclick="deleteDate()">清除</button></td>
+            </tr>
+        </table>
+        <span id="printYear"></span>
+        <tr>
+            年
+        </tr>
+        <span id="printMonth"></span>
+        <tr>
+            月
+        </tr>
+        <div id="container">
+            <table id="calendartable">
+                <tr>
+                    <th>日</th>
+                    <th>一</th>
+                    <th>二</th>
+                    <th>三</th>
+                    <th>四</th>
+                    <th>五</th>
+                    <th>六</th>
+                </tr>
+                <!--新增一個Tbody，直接在這裡做新增刪除-->
+                <tbody id="calendarTbody"></tbody>
+            </table>
+        </div>
+    </body>
+</html>
